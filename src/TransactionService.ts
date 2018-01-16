@@ -3,13 +3,12 @@ import {
   EmptyMessage, PublicAccount, TransactionHttp, SignedTransaction, Transaction
 } from "nem-library";
 import { XEM } from "nem-library/dist/src/models/mosaic/XEM";
+import { getAccount } from "./utils/AccountUtils";
 
-const privateKey: string = process.env.PRIVATE_KEY;
-const account = Account.createWithPrivateKey(privateKey);
 const transactionHttp = new TransactionHttp();
 
 const signAndBroadcastTransaction = (transaction : Transaction) => {
-  const signedTransaction: SignedTransaction = account.signTransaction(transaction);
+  const signedTransaction: SignedTransaction = getAccount().signTransaction(transaction);
   
   console.log(`Broadcasting Transaction: ${JSON.stringify(transaction)}`)
 
