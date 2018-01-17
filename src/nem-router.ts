@@ -36,5 +36,6 @@ router.use(function getNamespace (req : Request, res : Response, next : any) {
 
 router.post('/mosaic', MosaicController.createMosaic);
 router.get('/mosaic', MosaicController.getAllMosaics);
+router.post('/mosaic/:mosaicId', MosaicController.sendMosaic);
 
 export default router;

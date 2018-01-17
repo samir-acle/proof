@@ -8,7 +8,7 @@ import { getAccount } from "./utils/AccountUtils";
 const transactionHttp = new TransactionHttp();
 
 const signAndBroadcastTransaction = (transaction : Transaction) => {
-  const signedTransaction: SignedTransaction = getAccount().signTransaction(transaction);
+  const signedTransaction: SignedTransaction = getAccount('org').signTransaction(transaction);
   
   console.log(`Broadcasting Transaction: ${JSON.stringify(transaction)}`)
 

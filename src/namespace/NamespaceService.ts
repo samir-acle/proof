@@ -23,13 +23,13 @@ const registerNamespace = (namespaceName : string) => {
 const getAllNamespaces  = () => {  
   return namespaceHttp
     .getRootNamespaces(id)
-    .flatMap((n) => _.filter(n, n => _.isEqual(n.owner, getAddress())).map(n => n.name));
+    .flatMap((n) => _.filter(n, n => _.isEqual(n.owner, getAddress('org'))).map(n => n.name));
 }
 
 const getDefaultNamespace = () => {
   return namespaceHttp
     .getRootNamespaces(id)
-    .flatMap((n) => _.filter(n, n => _.isEqual(n.owner, getAddress())).map(n => n.name))
+    .flatMap((n) => _.filter(n, n => _.isEqual(n.owner, getAddress('org'))).map(n => n.name))
     .first();
 }
 

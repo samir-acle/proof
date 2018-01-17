@@ -2,7 +2,6 @@ import * as NamespaceService from "./NamespaceService"
 import * as _ from "lodash";
 import { Request, Response } from "express";
 import { Namespace } from "nem-library";
-import { getAddress } from '../utils/AccountUtils';
 
 exports.createNamespace = (req : Request, res : Response) => {
   const namespaceName = _.get(req, 'body.name');
