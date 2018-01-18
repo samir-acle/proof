@@ -5,6 +5,7 @@ var MosaicController = require('./mosaic/MosaicController');
 import {Request, Response} from 'express';
 import * as NamespaceService from './namespace/NamespaceService';
 import * as _ from "lodash";
+import setupMessage from './middleware/setupMessage';
 
 router.use(function actionLog (req : Request, res : Response, next : any) {
   console.log('Req: ', req.url)
@@ -36,6 +37,8 @@ router.use(function getNamespace (req : Request, res : Response, next : any) {
 
 router.post('/mosaic', MosaicController.createMosaic);
 router.get('/mosaic', MosaicController.getAllMosaics);
-router.post('/mosaic/:mosaicId', MosaicController.sendMosaic);
+
+router.use(setupMessage)
+      .post('/mosaic/:mosaicId', MosaicController.sendMosaic);
 
 export default router;

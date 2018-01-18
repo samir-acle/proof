@@ -1,4 +1,4 @@
-import { TimeWindow, MosaicDefinition, MosaicDefinitionCreationTransaction, Address, EmptyMessage, TransferTransaction, PublicAccount, MosaicId, MosaicProperties, MosaicLevy, MosaicHttp } from "nem-library";
+import { TimeWindow, MosaicDefinition, MosaicDefinitionCreationTransaction, Address, EmptyMessage, TransferTransaction, PublicAccount, MosaicId, MosaicProperties, MosaicLevy, MosaicHttp, Message } from "nem-library";
 import {XEM} from "nem-library/dist/src/models/mosaic/XEM";
 import { signAndBroadcastTransaction } from "../TransactionService";
 import * as Rx from 'rxjs';
@@ -30,7 +30,7 @@ const getAllMosaics  = (namespaceName: string) => {
     .map(m => m.map(m => _.get(m, 'id.name')));
 }
 
-const sendSingleMosaic = (namespaceName : string, mosaicName : string, recipientAddress : string) => {
+const sendSingleMosaic = (namespaceName : string, mosaicName : string, recipientAddress : string, messageObject : Message) => {
   const mosaicId : MosaicId = new MosaicId(namespaceName, mosaicName)
 
   return mosaicHttp
@@ -39,7 +39,7 @@ const sendSingleMosaic = (namespaceName : string, mosaicName : string, recipient
       TimeWindow.createWithDeadline(),
       new Address(recipientAddress),
       [m],
-      EmptyMessage
+      messageObject
     ))
     .flatMap(t => signAndBroadcastTransaction(t));
 };

@@ -33,7 +33,7 @@ exports.sendMosaic = (req : Request, res : Response) => {
   const formattedAddress = recipientAddress.replace(/-/g, '');
   
   MosaicService
-    .sendSingleMosaic(namespaceName, mosaicName, formattedAddress)
+    .sendSingleMosaic(namespaceName, mosaicName, formattedAddress, req.body.messageObject)
     .subscribe(
       n => res.json({result: n}),
       e => res.status(500).send(e.message),

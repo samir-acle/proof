@@ -1,4 +1,4 @@
-import { Address, Account, PublicAccount } from "nem-library";
+import { Address, Account, PublicAccount, AccountHttp, AccountInfoWithMetaData } from "nem-library";
 
 const userPrivateKey: string = process.env.USER_PRIVATE_KEY;
 const orgPrivateKey: string = process.env.ORG_PRIVATE_KEY;
@@ -6,6 +6,8 @@ const orgPrivateKey: string = process.env.ORG_PRIVATE_KEY;
 let accounts:{ [index:string] : Account} = {};
 accounts['org'] = Account.createWithPrivateKey(orgPrivateKey);
 accounts['user'] = Account.createWithPrivateKey(userPrivateKey);
+
+const accountHttp = new AccountHttp();
 
 const getAddress = (type : string) => {
   return accounts[type].address;
@@ -19,8 +21,13 @@ const getPublicAccount = (type: string) => {
   return PublicAccount.createWithPublicKey(accounts[type].publicKey);
 }
 
+const getPublicAccountFromAddress = (address: string) => {
+  return accountHttp.getFromAddress(new Address(address));
+}
+
 export {
   getAddress,
   getAccount,
-  getPublicAccount
+  getPublicAccount,
+  getPublicAccountFromAddress,
 }
