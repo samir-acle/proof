@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { Request, Response } from "express";
 import { Mosaic,  } from "nem-library";
 
-exports.createMosaic = (req : Request, res : Response) => {
+const createMosaic = (req : Request, res : Response) => {
   const mosaicName = _.get(req, 'body.mosaicName');
   const namespaceName = _.get(req, 'body.namespaceName');
 
@@ -15,7 +15,7 @@ exports.createMosaic = (req : Request, res : Response) => {
     );
 }
 
-exports.getAllMosaics = (req : Request, res : Response) => {
+const getAllMosaics = (req : Request, res : Response) => {
   const namespaceName : string = _.get(req, 'query.namespaceName') || _.get(req, 'body.namespaceName');
   
   MosaicService
@@ -26,7 +26,7 @@ exports.getAllMosaics = (req : Request, res : Response) => {
     );
 }
 
-exports.sendMosaic = (req : Request, res : Response) => {
+const sendMosaic = (req : Request, res : Response) => {
   const namespaceName : string = _.get(req, 'body.namespaceName');
   const mosaicName : string = _.get(req, 'params.mosaicId');
   const recipientAddress : string = _.get(req, 'body.recipientAddress');
@@ -38,4 +38,10 @@ exports.sendMosaic = (req : Request, res : Response) => {
       n => res.json({result: n}),
       e => res.status(500).send(e.message),
     );
+}
+
+export {
+  createMosaic,
+  getAllMosaics,
+  sendMosaic,
 }

@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { Request, Response } from "express";
 import { Namespace } from "nem-library";
 
-exports.createNamespace = (req : Request, res : Response) => {
+const createNamespace = (req : Request, res : Response) => {
   const namespaceName = _.get(req, 'body.name');
 
   NamespaceService
@@ -14,11 +14,16 @@ exports.createNamespace = (req : Request, res : Response) => {
     );
 }
 
-exports.getAllNamespaces = (req : Request, res : Response) => {
+const getAllNamespaces = (req : Request, res : Response) => {
   NamespaceService
     .getAllNamespaces()
     .subscribe(
       namespaces => res.json({namespaces}),
       e => res.status(500).send(e.message),
     );
+}
+
+export {
+  createNamespace,
+  getAllNamespaces
 }

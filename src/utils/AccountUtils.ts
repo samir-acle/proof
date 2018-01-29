@@ -22,8 +22,16 @@ const getPublicAccount = (type: string) => {
 }
 
 const getPublicAccountFromAddress = (address: string) => {
-  return accountHttp.getFromAddress(new Address(address));
-}
+  accountHttp.getFromAddress(new Address(address))
+    .subscribe(
+      (a) => {
+        console.log(a);
+      },
+      (e) => {
+        console.log(e);
+      }
+    )
+};
 
 export {
   getAddress,

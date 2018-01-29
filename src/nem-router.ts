@@ -1,44 +1,30 @@
-var express = require('express')
-var router = express.Router()
-var NamespaceController = require('./namespace/NamespaceController');
-var MosaicController = require('./mosaic/MosaicController');
+import * as express from "express";
+import * as NamespaceController from "./namespace/NamespaceController";
+import * as MosaicController from "./mosaic/MosaicController";
+import * as AccountController from "./account/AccountController";
 import {Request, Response} from 'express';
 import * as NamespaceService from './namespace/NamespaceService';
 import * as _ from "lodash";
 import setupMessage from './middleware/setupMessage';
+import getDefaultNamespaceIfNotProvided from './middleware/getNamespace';
 
+var router = express.Router()
 router.use(function actionLog (req : Request, res : Response, next : any) {
   console.log('Req: ', req.url)
   next()
 })
 
-router.post('/namespace', NamespaceController.createNamespace);
-router.get('/namespace', NamespaceController.getAllNamespaces);
+router.post('/namespaces', NamespaceController.createNamespace);
+router.get('/namespaces', NamespaceController.getAllNamespaces);
 
 // clean up, make separate routers?
-router.use(function getNamespace (req : Request, res : Response, next : any) {
-  const namespaceName = _.get(req, 'body.namespaceName') || _.get(req, 'query.namespaceName')
-  if (namespaceName) {
-    next();
-  } else {
-    console.log('getting namespace name')
-    
-      NamespaceService
-        .getDefaultNamespace()
-        .subscribe(
-          (n) => {
-            req.body.namespaceName = n;
-            next();
-          },
-          (e) => res.status(500).send(e.message),
-        );
-  }
-})
+// breakout middleware into own files
+// create validator middleware
 
-router.post('/mosaic', MosaicController.createMosaic);
-router.get('/mosaic', MosaicController.getAllMosaics);
+router.post('/mosaics', getDefaultNamespaceIfNotProvided, MosaicController.createMosaic);
+router.get('/mosaics', getDefaultNamespaceIfNotProvided, MosaicController.getAllMosaics)
+router.post('/mosaics/:mosaicId', setupMessage, MosaicController.sendMosaic);
 
-router.use(setupMessage)
-      .post('/mosaic/:mosaicId', MosaicController.sendMosaic);
+router.get('/transactions', AccountController.getAllTransactions);
 
 export default router;

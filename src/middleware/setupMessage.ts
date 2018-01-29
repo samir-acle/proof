@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import Middleware from './middlewareInterface';
 import { getAccount, getPublicAccountFromAddress } from '../utils/AccountUtils';
 import * as _ from 'lodash';
-import { EmptyMessage, PublicAccount, PlainMessage } from 'nem-library';
+import { EmptyMessage, PublicAccount, PlainMessage, Address } from 'nem-library';
 
 let encryptMessageIfNeeded: Middleware;
 
@@ -17,15 +17,15 @@ encryptMessageIfNeeded = (req : Request, res : Response, next : any) => {
   
   if (encrypt) {
     getPublicAccountFromAddress(req.body.recipientAddress)
-      .subscribe(
-        account => {
-          const encryptedMessage = getAccount('org').encryptMessage(message, account.publicAccount);     
-          req.body.messageObject = encryptedMessage;
-          next();   
-        },
-        e => {
-          res.status(500).send("unable to encrypt message");
-        })    
+      // .subscribe(
+      //   account => {
+      //     const encryptedMessage = getAccount('org').encryptMessage(message, account.publicAccount);     
+      //     req.body.messageObject = encryptedMessage;
+      //     next();   
+      //   },
+      //   e => {
+      //     res.status(500).send("Failed to get Public Account");
+      //   })    
   } else {
     req.body.messageObject = PlainMessage.create(message);
     next();
